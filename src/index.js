@@ -20,10 +20,52 @@ const fragmentSource = `
 	varying vec2 vTexturePosition;
 	varying vec2 vPosition;
 	uniform vec2 uMousePosition;
+	uniform highp float uWidth;
+
+	bool isLive(vec2 offset) {
+			vec4 lastColor = texture2D(uSampler, vTexturePosition + offset);
+			if (lastColor.r == 0.0) {
+				return true;
+			} else {
+				return false;
+			}
+	}
+
 	void main(void) {
 		float saturation = 1.0 - distance(uMousePosition, vPosition);
-		vec4 lastColor = texture2D(uSampler, vTexturePosition + vec2(0.01, 0.01));
-		gl_FragColor = lastColor;
+		int liveCount = 0;
+		float step = 1.0/uWidth;
+		// step = 0.0;
+
+		if (isLive(vec2(-step, -step))) {liveCount++;}
+		if (isLive(vec2(-step, 0))) {liveCount++;}
+		if (isLive(vec2(-step, step))) {liveCount++;}
+		if (isLive(vec2(0, -step))) {liveCount++;}
+		if (isLive(vec2(0, step))) {liveCount++;}
+		if (isLive(vec2(step, -step))) {liveCount++;}
+		if (isLive(vec2(step, 0))) {liveCount++;}
+		if (isLive(vec2(step, step))) {liveCount++;}
+
+		if (liveCount < 2) {
+			gl_FragColor = vec4(1.0, 0, 0, 1.0);
+		} else if (liveCount < 4) {
+			gl_FragColor = vec4(0, 1.0, 0, 1.0);
+		} else if (liveCount < 8) {
+			gl_FragColor = vec4(0, 0, 1.0, 1.0);
+		} else {
+			gl_FragColor = vec4(1.0, 0, 1.0, 1.0);
+		}
+		// gl_FragColor = vec4(0, 0, 0, 1.0);
+		bool selfIsLive = isLive(vec2(0,0));
+		if (selfIsLive && (liveCount == 2 || liveCount == 3)) {
+			gl_FragColor = vec4(0, 0, 0, 1.0);
+		} else if (!selfIsLive && (liveCount == 3)) {
+			gl_FragColor = vec4(0, 0, 0, 1.0);
+		} else {
+			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+		}
+
+		// gl_FragColor = texture2D(uSampler, vTexturePosition);
 		// gl_FragColor = vec4(lastColor.r + saturation, lastColor.gba);
 		// gl_FragColor = vec4(saturation, 0, 0, 1.0);
 	}
@@ -51,6 +93,7 @@ createProgram(vertexSource, fragmentSource, (gl, shaderProgram) => {
 	gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
 
 	const uSampler = gl.getUniformLocation(shaderProgram, "uSampler");
+	const uWidth = gl.getUniformLocation(shaderProgram, "uWidth");
 	const uMousePosition = gl.getUniformLocation(shaderProgram, "uMousePosition");
 	const tTexture0 = gl.createTexture();
 	gl.activeTexture(gl.TEXTURE0);
@@ -100,7 +143,7 @@ createProgram(vertexSource, fragmentSource, (gl, shaderProgram) => {
 	// END INTERACTION HANDLER
 
 	// DRAW LOOP
-	gl.clearColor(0, 1, 0, 1.0);
+	gl.clearColor(0, 0, 0, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	//Initial state
@@ -108,10 +151,23 @@ createProgram(vertexSource, fragmentSource, (gl, shaderProgram) => {
 	initialCanvas.width = gl.canvas.width;
 	initialCanvas.height = gl.canvas.height;
 	const context = initialCanvas.getContext('2d');
-	context.fillRect(0, 0, 64, 64);
+	context.globalAlpha = 1.0;
+	for (var i = 0; i < gl.canvas.width; i++) {
+		for (var j = 0; j < gl.canvas.width; j++) {
+			if (Math.random() < 0.35) {
+				context.fillStyle = 'black';
+				context.fillRect(i, j, 1, 1);
+			} else {
+				context.fillStyle = 'white';
+				context.fillRect(i, j, 1, 1);
+			}
+		}
+	}
 	gl.bindTexture(gl.TEXTURE_2D, tTexture0);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, initialCanvas);
 	gl.bindTexture(gl.TEXTURE_2D, null);
+
+	gl.uniform1f(uWidth, gl.canvas.width);
 
 	let flip = 0;
 

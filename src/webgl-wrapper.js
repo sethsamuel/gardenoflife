@@ -7,7 +7,7 @@ export default function createProgram(vertexSource, fragmentSource, callback) {
 
 	// BEGIN WINDOW SIZING
 	function resize() {
-		// const size = Math.min(window.innerWidth, window.innerHeight) - 16;
+		// const size = Math.pow(2,Math.floor(Math.log2(Math.min(window.innerWidth, window.innerHeight))));
 		const size = 256;
 		canvas.width = size;
 		canvas.height = size;
