@@ -24,7 +24,7 @@ const fragmentSource = `
 
 	bool isLive(vec2 offset) {
 			vec4 lastColor = texture2D(uSampler, vTexturePosition + offset);
-			if (lastColor.r == 0.0) {
+			if (lastColor.r == 1.0) {
 				return true;
 			} else {
 				return false;
@@ -57,12 +57,17 @@ const fragmentSource = `
 		}
 		// gl_FragColor = vec4(0, 0, 0, 1.0);
 		bool selfIsLive = isLive(vec2(0,0));
+		vec4 lastColor = texture2D(uSampler, vTexturePosition);
 		if (selfIsLive && (liveCount == 2 || liveCount == 3)) {
-			gl_FragColor = vec4(0, 0, 0, 1.0);
+			if (lastColor.g < 1.0) {
+				gl_FragColor = lastColor + vec4(1.0, 0.05, 0.0, 1.0);
+			} else {
+				gl_FragColor = lastColor + vec4(1.0, 0.0, 0.05, 1.0);
+			}
 		} else if (!selfIsLive && (liveCount == 3)) {
-			gl_FragColor = vec4(0, 0, 0, 1.0);
+			gl_FragColor = vec4(1.0, 0, 0, 1.0);
 		} else {
-			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 		}
 
 		// gl_FragColor = texture2D(uSampler, vTexturePosition);
@@ -155,10 +160,10 @@ createProgram(vertexSource, fragmentSource, (gl, shaderProgram) => {
 	for (var i = 0; i < gl.canvas.width; i++) {
 		for (var j = 0; j < gl.canvas.width; j++) {
 			if (Math.random() < 0.35) {
-				context.fillStyle = 'black';
+				context.fillStyle = 'red';
 				context.fillRect(i, j, 1, 1);
 			} else {
-				context.fillStyle = 'white';
+				context.fillStyle = 'black';
 				context.fillRect(i, j, 1, 1);
 			}
 		}
