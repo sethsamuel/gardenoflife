@@ -6,6 +6,7 @@
   "scripts": {
     "start": "PORT=8888 webpack-dev-server --progress --profile --colors --hot",
     "build": "NODE_ENV=production webpack -p --progress --profile --colors",
+    "deploy": "npm run build && git checkout gh-pages && git rm --cached -rf . && /bin/ls dist | xargs -t -I {} cp -R dist/{} . && /bin/ls dist | xargs -t -I {} git add {} && git commit -m 'GH Pages Build' && git push && git checkout master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
