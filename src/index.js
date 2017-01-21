@@ -60,14 +60,14 @@ const fragmentSource = `
 		vec4 lastColor = texture2D(uSampler, vTexturePosition);
 		if (selfIsLive && (liveCount == 2 || liveCount == 3)) {
 			if (lastColor.g < 1.0) {
-				gl_FragColor = lastColor + vec4(1.0, 0.05, 0.0, 1.0);
+				gl_FragColor = lastColor + vec4(1.0, 0.01, 0.0, 1.0);
 			} else {
-				gl_FragColor = lastColor + vec4(1.0, 0.0, 0.05, 1.0);
+				gl_FragColor = lastColor + vec4(1.0, 0.0, 0.01, 1.0);
 			}
 		} else if (!selfIsLive && (liveCount == 3)) {
 			gl_FragColor = vec4(1.0, 0, 0, 1.0);
 		} else {
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 0.8);
 		}
 
 		// gl_FragColor = texture2D(uSampler, vTexturePosition);
