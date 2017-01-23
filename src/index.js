@@ -65,10 +65,10 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 // INTERACTION HANDLER
 var mousePosition = [];
 gl.canvas.addEventListener('mousemove', evt => {
-  mousePosition = [
-    (evt.clientX/gl.canvas.width - 0.5) * 2.0,
-    (1.0 - evt.clientY/gl.canvas.height - 0.5) * 2.0
-  ];
+	mousePosition = [
+		(evt.clientX/gl.canvas.width - 0.5) * 2.0,
+		(1.0 - evt.clientY/gl.canvas.height - 0.5) * 2.0
+	];
 	// draw();
 });
 // END INTERACTION HANDLER
@@ -115,17 +115,17 @@ function draw() {
 		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tTexture0, 0);
 	}
 
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 3);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 3);
 
 	//Draw to canvas
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 3);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 3);
 
 	flip = (flip + 1) % 2;
 	gl.bindTexture(gl.TEXTURE_2D, null);
 
 	// setTimeout(draw, 1000);
-  requestAnimationFrame(draw);
+	requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
 // END DRAW LOOP
