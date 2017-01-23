@@ -11,6 +11,8 @@ export function createProgram(vertexSource, fragmentSource) {
 		// const size = 256;
 		canvas.width = size;
 		canvas.height = size;
+		canvas.style.width = size/2 + 'px';
+		canvas.style.height = size/2 + 'px';
 
 		// Set viewport
 		gl.viewport(0, 0, canvas.width, canvas.height);
