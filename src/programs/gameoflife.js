@@ -18,6 +18,7 @@ const GameOfLife = {
 		varying vec2 vPosition;
 		uniform vec2 uMousePosition;
 		uniform highp float uWidth;
+		uniform int uShouldUpdate;
 
 		bool isLive(vec2 offset) {
 				vec4 lastColor = texture2D(uSampler, vTexturePosition + offset);
@@ -29,6 +30,13 @@ const GameOfLife = {
 		}
 
 		void main(void) {
+			vec4 lastColor = texture2D(uSampler, vTexturePosition);
+
+			if (uShouldUpdate == 0) {
+				gl_FragColor = lastColor;
+				return;
+			}
+
 			float d = distance(uMousePosition, vPosition);
 			if (d < 2.0/uWidth) {
 				gl_FragColor = vec4(1.0, 0, 0, 1.0);
@@ -58,7 +66,6 @@ const GameOfLife = {
 			}
 
 			bool selfIsLive = isLive(vec2(0,0));
-			vec4 lastColor = texture2D(uSampler, vTexturePosition);
 			if (selfIsLive && (liveCount == 2 || liveCount == 3)) {
 				if (lastColor.g < 1.0) {
 					gl_FragColor = lastColor + vec4(1.0, 0.01, 0.0, 1.0);
