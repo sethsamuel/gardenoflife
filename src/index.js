@@ -27,25 +27,37 @@ gl.clearColor(0, 0, 0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 //Initial state
-const initialCanvas = document.createElement('canvas');
-initialCanvas.width = gl.canvas.width;
-initialCanvas.height = gl.canvas.height;
-const context = initialCanvas.getContext('2d');
-context.globalAlpha = 1.0;
+// const initialCanvas = document.createElement('canvas');
+// initialCanvas.width = gl.canvas.width;
+// initialCanvas.height = gl.canvas.height;
+// const context = initialCanvas.getContext('2d');
+// context.globalAlpha = 1.0;
+const initialArray = [];
+console.time('Init');
 for (var i = 0; i < gl.canvas.width; i++) {
-	for (var j = 0; j < gl.canvas.width; j++) {
+	for (var j = 0; j < gl.canvas.height; j++) {
 		if (Math.random() < 0.35) {
-			context.fillStyle = 'red';
-			context.fillRect(i, j, 1, 1);
+			// context.fillStyle = 'red';
+			// context.fillRect(i, j, 1, 1);
+			initialArray[(j*gl.canvas.width + i)*4] = 255;
+			initialArray[(j*gl.canvas.width + i)*4+1] = 0.0;
+			initialArray[(j*gl.canvas.width + i)*4+2] = 0.0;
+			initialArray[(j*gl.canvas.width + i)*4+3] = 255;
 		} else {
-			context.fillStyle = 'black';
-			context.fillRect(i, j, 1, 1);
+			// context.fillStyle = 'black';
+			// context.fillRect(i, j, 1, 1);
+			initialArray[(j*gl.canvas.width + i)*4] = 0.0;
+			initialArray[(j*gl.canvas.width + i)*4+1] = 0.0;
+			initialArray[(j*gl.canvas.width + i)*4+2] = 0.0;
+			initialArray[(j*gl.canvas.width + i)*4+3] = 255;
 		}
 	}
 }
-context.fillStyle = 'red';
-context.fillRect(0, 0, 64, 64);
-golStateProgram.setState(initialCanvas);
+// context.fillStyle = 'red';
+// context.fillRect(0, 0, 64, 64);
+// golStateProgram.setState(initialCanvas);
+golStateProgram.setState(new ImageData(new Uint8ClampedArray(initialArray), gl.canvas.width, gl.canvas.height));
+console.timeEnd('Init');
 
 
 let flip = 0;
@@ -53,8 +65,8 @@ let flip = 0;
 function draw() {
 	// gl.uniform2f(uMousePosition, mousePosition[0], mousePosition[1]);
 
-	golStateProgram.incrementState();
 	golStateProgram.drawState();
+	golStateProgram.incrementState();
 
   requestAnimationFrame(draw);
 }
