@@ -1,4 +1,4 @@
-export default function createProgram(vertexSource, fragmentSource, callback) {
+export function createProgram(vertexSource, fragmentSource) {
 	// GLOBALS
 	const body = document.body;
 	const canvas = document.querySelector('canvas');
@@ -71,5 +71,5 @@ export default function createProgram(vertexSource, fragmentSource, callback) {
 	// END INITIALIZE SHADERS
 
 
-	callback(gl, shaderProgram);
+	return {gl, shaderProgram};
 }
