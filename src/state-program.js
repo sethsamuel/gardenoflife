@@ -59,6 +59,8 @@ export default class StateProgram {
 
 	drawState() {
 		const gl = this.gl;
+		gl.useProgram(this.shaderProgram);
+
 		gl.uniform1i(this.uShouldUpdate, 0);
 
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -76,6 +78,8 @@ export default class StateProgram {
 
 	incrementState() {
 		const gl = this.gl;
+		gl.useProgram(this.shaderProgram);
+
 		gl.uniform1i(this.uShouldUpdate, 1);
 
 		gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
@@ -95,5 +99,13 @@ export default class StateProgram {
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
 		this.currentState = (this.currentState + 1) % 2;
+	}
+
+	stateTexture() {
+		if (this.currentState == 0) {
+			return this.tTexture0;
+		} else {
+			return this.tTexture1;
+		}
 	}
 }

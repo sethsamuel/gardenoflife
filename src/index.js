@@ -1,10 +1,13 @@
 import {createProgram} from './webgl';
 import StateProgram from './state-program';
+import RenderProgram from './render-program';
 import GameOfLife from './programs/gameoflife';
+import GameOfLifeBlur from './programs/gameoflife-blur';
 
 console.log('🐭');
 
 let golStateProgram = new StateProgram({shaderSource: GameOfLife});
+let golRenderProgram = new RenderProgram({shaderSource: GameOfLifeBlur});
 
 let gl = document.querySelector('canvas').getContext('webgl2');
 
@@ -65,8 +68,11 @@ let flip = 0;
 function draw() {
 	// gl.uniform2f(uMousePosition, mousePosition[0], mousePosition[1]);
 
-	golStateProgram.drawState();
+	// golStateProgram.drawState();
+
 	golStateProgram.incrementState();
+
+	golRenderProgram.draw(golStateProgram.stateTexture());
 
   requestAnimationFrame(draw);
 }
