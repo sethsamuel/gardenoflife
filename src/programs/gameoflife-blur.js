@@ -25,6 +25,15 @@ const GameOfLifeBlur = {
 			float stepY = 1.0/float(size.y);
 			int side = 2*radius + 1;
 
+
+			for (int x = 0; x < side; x++) {
+				for (int y = 0; y < side; y++) {
+					if (isLive(vec2(stepX * float(-radius + x), stepY * float(-radius + y)))) {
+						return true;
+					}
+				}
+			}
+			return false;
 			//Top
 			for (int i = 0; i < side; i++) {
 				if (isLive(vec2(stepX * float(-radius + i), stepY * float(-radius)))) {
@@ -58,10 +67,13 @@ const GameOfLifeBlur = {
 		}
 
 		void main(void) {
+			// fragmentColor = texture(uSampler, vTexturePosition);
+			// return;
+
 			ivec2 size = textureSize(uSampler, 0);
 			float stepX = 1.0/float(size.x);
 			float stepY = 1.0/float(size.y);
-			if (radiusIsLive(10)) {
+			if (radiusIsLive(5)) {
 					fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
 					return;
 			} else {
