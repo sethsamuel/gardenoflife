@@ -5,11 +5,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || '8888';
+const PORT = process.env.PORT || '8889';
 
 let plugins = [];
 if (process.env.NODE_ENV !== 'production') {
-  plugins = plugins.concat([new webpack.NoErrorsPlugin(), new webpack.HotModuleReplacementPlugin()]);
+  plugins = plugins.concat([new webpack.NoEmitOnErrorsPlugin(), new webpack.HotModuleReplacementPlugin()]);
 }
 
 plugins = plugins.concat(new webpack.DefinePlugin({
@@ -50,7 +50,7 @@ module.exports = {
 
   devtool: process.env.WEBPACK_DEVTOOL || 'source-map',
   output: {
-    publicPath: './',
+    publicPath: '/',
     path: path.join(process.cwd(), 'dist'),
     filename: '[name].js'
   },
@@ -58,43 +58,43 @@ module.exports = {
     alias: {
       'react': path.resolve(path.join(process.cwd(), 'node_modules', 'react'))
     },
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ['babel']
+        use: ['babel-loader']
       },
       {
         test: /\.pug$/,
         exclude: /node_modules/,
-        loader: 'pug-html-loader'
+        use: ['pug-html-loader']
       },
       {
         test: /^((?!\.global).)*\.css$/,
         exclude: /node_modules/,
-        loaders: [
+        use: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
         ]
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader'
+        use: ['file-loader']
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?prefix=font/&limit=5000'
+        use: ['url-loader?prefix=font/&limit=5000']
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
+        use: ['url-loader?limit=10000&mimetype=application/octet-stream']
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+        use: ['url-loader?limit=10000&mimetype=image/svg+xml']
       }
     ]
   },
@@ -105,7 +105,7 @@ module.exports = {
     inline: true,
     port: PORT,
     host: HOST,
-    headers: {Pragma: 'no-cache', Expires: 0, 'Cache-Control': 'no-cache, no-store, must-revalidate'},
+    headers: {Pragma: 'no-cache', Expires: '0', 'Cache-Control': 'no-cache, no-store, must-revalidate'},
     historyApiFallback: true
     },
   plugins

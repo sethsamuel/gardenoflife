@@ -55,15 +55,15 @@ const GameOfLife = {
 			if (isLive(vec2(step, 0))) {liveCount++;}
 			if (isLive(vec2(step, step))) {liveCount++;}
 
-			if (liveCount < 2) {
-				gl_FragColor = vec4(1.0, 0, 0, 1.0);
-			} else if (liveCount < 4) {
-				gl_FragColor = vec4(0, 1.0, 0, 1.0);
-			} else if (liveCount < 8) {
-				gl_FragColor = vec4(0, 0, 1.0, 1.0);
-			} else {
-				gl_FragColor = vec4(1.0, 0, 1.0, 1.0);
-			}
+			// if (liveCount < 2) {
+			// 	gl_FragColor = vec4(1.0, 0, 0, 1.0);
+			// } else if (liveCount < 4) {
+			// 	gl_FragColor = vec4(0, 1.0, 0, 1.0);
+			// } else if (liveCount < 8) {
+			// 	gl_FragColor = vec4(0, 0, 1.0, 1.0);
+			// } else {
+			// 	gl_FragColor = vec4(1.0, 0, 1.0, 1.0);
+			// }
 
 			bool selfIsLive = isLive(vec2(0,0));
 			if (selfIsLive && (liveCount == 2 || liveCount == 3)) {
