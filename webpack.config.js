@@ -50,7 +50,7 @@ module.exports = {
 
   devtool: process.env.WEBPACK_DEVTOOL || 'source-map',
   output: {
-    publicPath: '/',
+    publicPath: (process.env.NODE_ENV === 'production') ? './' : '/',
     path: path.join(process.cwd(), 'dist'),
     filename: '[name].js'
   },
