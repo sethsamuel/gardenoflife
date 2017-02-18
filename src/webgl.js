@@ -2,7 +2,7 @@ export function createProgram(vertexSource, fragmentSource) {
 	// GLOBALS
 	const body = document.body;
 	const canvas = document.querySelector('canvas');
-	const gl = canvas.getContext('webgl');
+	const gl = canvas.getContext('webgl2');
 	// END GLOBALS
 
 	// BEGIN WINDOW SIZING
@@ -77,7 +77,7 @@ export function createProgram(vertexSource, fragmentSource) {
 }
 
 export function createTexture() {
-	const gl = document.querySelector('canvas').getContext('webgl');
+	const gl = document.querySelector('canvas').getContext('webgl2');
 	const tTexture = gl.createTexture();
 	gl.activeTexture(gl.TEXTURE0);
 	gl.bindTexture(gl.TEXTURE_2D, tTexture);

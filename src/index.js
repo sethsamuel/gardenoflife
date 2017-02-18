@@ -6,7 +6,7 @@ console.log('🐭');
 
 let golStateProgram = new StateProgram({shaderSource: GameOfLife});
 
-let gl = document.querySelector('canvas').getContext('webgl');
+let gl = document.querySelector('canvas').getContext('webgl2');
 
 // // const uMousePosition = gl.getUniformLocation(shaderProgram, "uMousePosition");
 //
